@@ -2,17 +2,13 @@
 
 A build system for Progressive Web Apps built in Rebol. 
 
-**Online Demo**
-
-https://brianotto.github.io/rebol-pwa/web/
-
 ## Installation
 
 Install a web server and point it to the [web](web) directory.
 
 ## Build Instructions
 
-If you make changes to the project then you will need to run the [build script](build.bat) to generate new files in the web directory.
+If you make changes to the default app then you will need to run the [build script](build.reb) to generate new files in the web directory.
 
 ## 3rd Party Libraries
 
