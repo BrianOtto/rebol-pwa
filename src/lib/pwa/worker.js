@@ -3,7 +3,7 @@ var cacheName = 'rebol-pwa-0.1.0'
 
 // TODO: auto generate this list
 var cacheURLs = [
-    '/',
+    './',
     './favicon.ico',
     './apple-touch-icon.png',
     './android-chrome-192x192.png',
