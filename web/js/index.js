@@ -64,7 +64,7 @@ if ('serviceWorker' in navigator) {
             }
         }
 
-        setTimeout(libr3IsLoaded, 0)
+        libr3IsLoaded()
     })
     .catch(error => {
         log('Rebol PWA - Service Worker Failed\n' + error)
