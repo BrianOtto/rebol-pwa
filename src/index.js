@@ -1,6 +1,6 @@
 var runRebol
 
-var debug = true
+var debug = false
 var debugTmp = false
 
 if ('serviceWorker' in navigator) {

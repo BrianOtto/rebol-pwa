@@ -43,14 +43,52 @@ index-src: to text! read %src/index.reb
 write %web/index.reb unspaced [index-web "^/" index-src]
 
 html: to text! read %src/index.html
-data: load/header %web/index.reb
 
-replace html "%title%" (first data)/title
-replace/all html "%version%" (first data)/version
-replace html "%theme-color%" (first data)/themecolor
+if not attempt [
+    data: load/header %web/index.reb
+    
+    headerTitle: (first data)/title
+    if any [empty? headerTitle headerTitle == "Untitled"] [1 / 0]
+    
+    headerVersion: (first data)/version
+    if empty? headerVersion [1 / 0]
+    
+    headerThemeColor: (first data)/themecolor
+    if empty? headerThemeColor [1 / 0]
+    
+    replace html "%title%" headerTitle
+    replace/all html "%version%" headerVersion
+    replace html "%theme-color%" headerThemeColor
+    
+    write %web/index.html html
+][
+    print "^/You have an invalid Rebol header in /app/index.reb"
+    print "It must have the following minimum fields."
+    
+    prin {
+    e.g.
 
-write %web/index.html html
-write %web/js/index.js read %src/index.js
+    Rebol ^(5B)
+        Title: "Rebol PWA"
+        Version: "0.1.0"
+        ThemeColor: "#FFFFFF"
+    ^(5D)
+    }
+    
+    quit
+]
+
+js: to text! read %src/index.js
+
+attempt [
+    headerDebugLevel: (first data)/debuglevel
+    
+    if headerDebugLevel >= 20 [
+        replace js "var debug = false" "var debug = true"
+    ]
+]
+
+write %web/js/index.js js
 
 print "^/Done"
 print "^/You can run the application by pointing a web server to"

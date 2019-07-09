@@ -2,6 +2,7 @@ Rebol [
     Title: "Rebol PWA"
     Version: "0.1.0"
     ThemeColor: "#FFFFFF"
+    DebugLevel: 20
 ]
 
 init: js-native [] {
