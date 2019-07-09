@@ -52,21 +52,6 @@ replace html "%theme-color%" (first data)/themecolor
 write %web/index.html html
 write %web/js/index.js read %src/index.js
 
-; remove the Rebol [] header, otherwise reb.Elide() will fail
-; load/mold does not preserve formatting and so we use parse instead
-
-; TODO: Look into preserving the header by using something other  
-;       than reb.Elide() to run the code. This will allow apps 
-;       access to it and we can get rid of the mess below
-
-data: to text! read %web/index.reb
-data-with-no-header: ""
-
-parse data ["Rebol [" thru "]" copy data-with-no-header to end]
-replace/all data-with-no-header "^M^M" "^M"
-
-write %web/index.reb data-with-no-header
-
 print "^/Done"
 print "^/You can run the application by pointing a web server to"
 

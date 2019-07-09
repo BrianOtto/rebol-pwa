@@ -1,4 +1,8 @@
-
+Rebol [
+    Title: "Rebol PWA"
+    Version: "0.1.0"
+    ThemeColor: "#FFFFFF"
+]
 
 init: js-native [] {
     // TODO: move this into the src/lib/vid-js library
@@ -64,7 +68,7 @@ init: js-native [] {
 }
 
 init
-
+
 ; Ren-C Interface
 
 read: function [

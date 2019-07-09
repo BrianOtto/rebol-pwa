@@ -47,7 +47,7 @@ if ('serviceWorker' in navigator) {
                     .then(function(text) {
                         log('Rebol PWA - Running index.reb')
                         
-                        reb.Elide(text)
+                        reb.Elide(text.replace(/Rebol \[[^\]]*\]/s, ''))
                         
                         log('Rebol PWA - Ren-C Console')
                         
