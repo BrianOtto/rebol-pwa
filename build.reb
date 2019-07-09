@@ -83,7 +83,9 @@ js: to text! read %src/index.js
 attempt [
     headerDebugLevel: (first data)/debuglevel
     
-    if headerDebugLevel >= 20 [
+    ; TODO: add support for various debug levels, e.g.
+    ; 10 = Info / 20 = Warning / 30 = Error / 40 = Critical
+    if headerDebugLevel >= 10 [
         replace js "var debug = false" "var debug = true"
     ]
 ]
