@@ -1,0 +1,11 @@
+* text=auto
+
+*.bat text eol=crlf
+*.sh text eol=lf
+
+*.reb text eol=lf
+*.r text eol=lf
+
+*.ico binary
+*.jpg binary
+*.png binary
