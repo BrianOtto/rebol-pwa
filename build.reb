@@ -41,6 +41,8 @@ delete-dir %web/
 copy-dir %src/lib/pwa/ %web/
 copy-dir %app/ %web/
 
+delete %web/.gitignore
+
 make-dir %web/js
 
 html: to text! read %src/index.html
