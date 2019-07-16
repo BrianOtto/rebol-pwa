@@ -195,20 +195,17 @@ this.onmessage = function(e) {
 
 
 
-// TODO: get this name from the Rebol [] header
 var cacheName = 'rebol-pwa-0.1.0'
-
-// TODO: auto generate this list
 var cacheURLs = [
-    './',
-    './favicon.ico',
-    './apple-touch-icon.png',
-    './android-chrome-192x192.png',
-    './android-chrome-512x512.png',
-    './index.html',
-    './index.reb',
-    './js/index.js',
-    './js/libr3.js'
+	'./',
+	'./android-chrome-192x192.png',
+	'./android-chrome-512x512.png',
+	'./apple-touch-icon.png',
+	'./favicon.ico',
+	'./index.html',
+	'./index.reb',
+	'./js/index.js',
+	'./js/libr3.js',
 ]
 
 // a new service worker is installing

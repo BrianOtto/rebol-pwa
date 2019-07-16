@@ -1,18 +1,5 @@
-// TODO: get this name from the Rebol [] header
-var cacheName = 'rebol-pwa-0.1.0'
-
-// TODO: auto generate this list
-var cacheURLs = [
-    './',
-    './favicon.ico',
-    './apple-touch-icon.png',
-    './android-chrome-192x192.png',
-    './android-chrome-512x512.png',
-    './index.html',
-    './index.reb',
-    './js/index.js',
-    './js/libr3.js'
-]
+var cacheName = '%cache-name%'
+var cacheURLs = [%cache-urls%]
 
 // a new service worker is installing
 // cache our URLs for offline usage 
