@@ -10,8 +10,6 @@ write-stdout: function [
     text [text! char!]
 ][
     if char? text [text: my to-text]
-    
-    ; TODO: look into stripping the extra whitespace
     trim/with text ">>"
     
     pwa-main-write text
