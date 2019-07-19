@@ -1,3 +1,3 @@
 view: js-native [] {
-    alert('Hello')
+    // TODO
 }

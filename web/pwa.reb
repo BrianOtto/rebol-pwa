@@ -1,18 +1,16 @@
 ; Ren-C Interface
 
-read: function [
-    source [any-value!]
-][
-    pwa-main-read to text! source
-]
-
 write-stdout: function [
     text [text! char!]
 ][
     if char? text [text: my to-text]
-    trim/with text ">>"
+    trim trim/with text ">>"
     
-    pwa-main-write text
+    if not empty? text [
+        if not find text "Welcome to Rebol" [
+            pwa-main-stdout text
+        ]
+    ]
 ]
 
 read-stdin: js-awaiter [
@@ -26,26 +24,13 @@ read-stdin: js-awaiter [
 }
 
 sys/export [
-    read
     write-stdout
     read-stdin
 ]
 
 ; Rebol PWA
 
-pwa-main-read: js-awaiter [
-    return: [binary!]
-    url [text!]
-]{
-    let url = reb.Spell(reb.ArgR('url'))
-    
-    let response = await fetch(url, { cache: 'no-store' })
-    let buffer = await response.arrayBuffer()
-    
-    return reb.Binary(buffer)
-}
-
-pwa-main-write: js-awaiter [
+pwa-main-stdout: js-awaiter [
     msg [text!]
 ]{
     log(reb.Spell(reb.ArgR('msg')))
@@ -54,9 +39,9 @@ pwa-main-write: js-awaiter [
 pwa-main: adapt 'console [ pwa-main-loaded ]
 pwa-main-loaded: js-native [] { pwaLoaded = true }
 
-pwa-load: load: js-awaiter [
+load: js-awaiter [
     url [text! file! url!]
-] {
+]{
     let url = reb.Spell(reb.ArgR('url'))
     
     log('Rebol PWA - Loading ' + url)
@@ -66,10 +51,10 @@ pwa-load: load: js-awaiter [
         .then(function(response) {
             return response.text()
         })
-        .then(function(rebol) {
-            log('Rebol PWA - Running ' + url, true)
+        .then(function(text) {
+            log('Rebol PWA - Running ' + url)
             
-            reb.Elide(rebol)
+            reb.Elide(text)
             
             resolve()
         })

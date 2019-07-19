@@ -98,7 +98,7 @@ write %web/js/index.js js
 
 write %web/js/libr3.js read %src/lib/ren-c/libr3.js
 
-write %web/pwa.reb read %src/index.reb
+write %web/pwa.reb read %src/pwa.reb
 
 worker-lib: to text! read %src/lib/ren-c/libr3.worker.js
 worker-src: to text! read %src/worker.js
