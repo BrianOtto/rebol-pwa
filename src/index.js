@@ -38,23 +38,33 @@ if ('serviceWorker' in navigator) {
                         '[load-extension collation]'
                     )
                     
-                    log('Rebol PWA - Loading index.reb')
+                    log('Rebol PWA - Loading VID-JS')
                     
-                    return fetch('index.reb')
+                    return fetch('vid.reb')
                     .then(function(response) {
                         return response.text()
                     })
                     .then(function(text) {
-                        log('Rebol PWA - Running index.reb')
+                        reb.Elide(text)
                         
-                        reb.Elide(text.replace(/Rebol \[[^\]]*\]/s, ''))
+                        log('Rebol PWA - Loading index.reb')
                         
-                        log('Rebol PWA - Ren-C Console')
-                        
-                        debugTmp = debug
-                        debug = false
-                        
-                        return reb.Promise('pwa-main')
+                        return fetch('index.reb')
+                        .then(function(response) {
+                            return response.text()
+                        })
+                        .then(function(text) {
+                            log('Rebol PWA - Running index.reb')
+                            
+                            reb.Elide(text.replace(/Rebol \[[^\]]*\]/s, ''))
+                            
+                            log('Rebol PWA - Ren-C Console')
+                            
+                            debugTmp = debug
+                            debug = false
+                            
+                            return reb.Promise('pwa-main')
+                        })
                     })
                 })
                 .then(function() {
@@ -73,6 +83,6 @@ if ('serviceWorker' in navigator) {
     log('Your browser does not support service workers.')
 }
 
-var log = function(msg) {
-    if (debug && window.console) { console.log(msg) }
+var log = function(msg, force) {
+    if ((debug || force) && window.console) { console.log(msg) }
 }

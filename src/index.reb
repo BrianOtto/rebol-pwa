@@ -46,13 +46,27 @@ pwa-main-read: js-awaiter [
 }
 
 pwa-main-write: js-awaiter [
-    log [text!]
+    msg [text!]
 ]{
-    let log = reb.Spell(reb.ArgR('log'))
-    
-    if (debug === true) {
-        console.log(log)
-    }
+    log(reb.Spell(reb.ArgR('msg')))
 }
 
-pwa-main: adapt 'console []
+pwa-main: adapt 'console []
+
+pwa-load: load: js-native [
+    url [text!]
+] {
+    let url = reb.Spell(reb.ArgR('url'))
+    
+    log('Rebol PWA - Loading ' + url)
+    
+    fetch(url)
+    .then(function(response) {
+        return response.text()
+    })
+    .then(function(rebol) {
+        log('Rebol PWA - Running ' + url, true)
+        
+        reb.Elide(rebol)
+    })
+}

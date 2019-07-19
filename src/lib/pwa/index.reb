@@ -5,6 +5,16 @@ Rebol [
     DebugLevel: 10
 ]
 
+; load %vid.reb
+
+; load %vid.reb isn't able to wait until loading is done
+; and so look into defining these in a header property
+; and prefixing them to index.reb during the build process
+; e.g. Includes: or Dependencies:
+
+; OR look into loading index.reb AFTER console
+; then we can wait for scripts using js-awaiter
+
 init: js-native [] {
     // TODO: move this into the src/lib/vid-js library
     
@@ -69,3 +79,4 @@ init: js-native [] {
 }
 
 init
+view

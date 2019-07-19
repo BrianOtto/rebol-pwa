@@ -1,9 +1,91 @@
+; Ren-C Interface
+
+read: function [
+    source [any-value!]
+][
+    pwa-main-read to text! source
+]
+
+write-stdout: function [
+    text [text! char!]
+][
+    if char? text [text: my to-text]
+    trim/with text ">>"
+    
+    pwa-main-write text
+]
+
+read-stdin: js-awaiter [
+    return: [text!]
+]{
+    return new Promise(function(resolve, reject) {
+        runRebol = function(text) {
+            resolve(reb.Text(text))
+        }
+    })
+}
+
+sys/export [
+    read
+    write-stdout
+    read-stdin
+]
+
+; Rebol PWA
+
+pwa-main-read: js-awaiter [
+    return: [binary!]
+    url [text!]
+]{
+    let url = reb.Spell(reb.ArgR('url'))
+    
+    let response = await fetch(url, { cache: 'no-store' })
+    let buffer = await response.arrayBuffer()
+    
+    return reb.Binary(buffer)
+}
+
+pwa-main-write: js-awaiter [
+    msg [text!]
+]{
+    log(reb.Spell(reb.ArgR('msg')))
+}
+
+pwa-main: adapt 'console []
+
+pwa-load: load: js-native [
+    url [text!]
+] {
+    let url = reb.Spell(reb.ArgR('url'))
+    
+    log('Rebol PWA - Loading ' + url)
+    
+    fetch(url)
+    .then(function(response) {
+        return response.text()
+    })
+    .then(function(rebol) {
+        log('Rebol PWA - Running ' + url, true)
+        
+        reb.Elide(rebol)
+    })
+}
 Rebol [
     Title: "Rebol PWA"
     Version: "0.1.0"
     ThemeColor: "#FFFFFF"
     DebugLevel: 10
 ]
+
+; load %vid.reb
+
+; load %vid.reb isn't able to wait until loading is done
+; and so look into defining these in a header property
+; and prefixing them to index.reb during the build process
+; e.g. Includes: or Dependencies:
+
+; OR look into loading index.reb AFTER console
+; then we can wait for scripts using js-awaiter
 
 init: js-native [] {
     // TODO: move this into the src/lib/vid-js library
@@ -69,62 +151,4 @@ init: js-native [] {
 }
 
 init
-
-; Ren-C Interface
-
-read: function [
-    source [any-value!]
-][
-    pwa-main-read to text! source
-]
-
-write-stdout: function [
-    text [text! char!]
-][
-    if char? text [text: my to-text]
-    trim/with text ">>"
-    
-    pwa-main-write text
-]
-
-read-stdin: js-awaiter [
-    return: [text!]
-]{
-    return new Promise(function(resolve, reject) {
-        runRebol = function(text) {
-            resolve(reb.Text(text))
-        }
-    })
-}
-
-sys/export [
-    read
-    write-stdout
-    read-stdin
-]
-
-; Rebol PWA
-
-pwa-main-read: js-awaiter [
-    return: [binary!]
-    url [text!]
-]{
-    let url = reb.Spell(reb.ArgR('url'))
-    
-    let response = await fetch(url, { cache: 'no-store' })
-    let buffer = await response.arrayBuffer()
-    
-    return reb.Binary(buffer)
-}
-
-pwa-main-write: js-awaiter [
-    log [text!]
-]{
-    let log = reb.Spell(reb.ArgR('log'))
-    
-    if (debug === true) {
-        console.log(log)
-    }
-}
-
-pwa-main: adapt 'console []
+view

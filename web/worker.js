@@ -206,6 +206,7 @@ var cacheURLs = [
 	'./index.reb',
 	'./js/index.js',
 	'./js/libr3.js',
+	'./vid.reb',
 ]
 
 // a new service worker is installing
