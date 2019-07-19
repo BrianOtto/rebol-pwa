@@ -1,4 +1,5 @@
 var runRebol
+var pwaLoaded = false
 
 var debug = false
 var debugTmp = false
@@ -38,38 +39,32 @@ if ('serviceWorker' in navigator) {
                         '[load-extension collation]'
                     )
                     
-                    log('Rebol PWA - Loading VID-JS')
+                    log('Rebol PWA - Loading pwa.reb')
                     
-                    return fetch('vid.reb')
+                    return fetch('pwa.reb')
                     .then(function(response) {
                         return response.text()
                     })
                     .then(function(text) {
+                        log('Rebol PWA - Running pwa.reb')
+                        
                         reb.Elide(text)
                         
-                        log('Rebol PWA - Loading index.reb')
+                        log('Rebol PWA - Ren-C Console')
                         
-                        return fetch('index.reb')
-                        .then(function(response) {
-                            return response.text()
-                        })
-                        .then(function(text) {
-                            log('Rebol PWA - Running index.reb')
-                            
-                            reb.Elide(text.replace(/Rebol \[[^\]]*\]/s, ''))
-                            
-                            log('Rebol PWA - Ren-C Console')
-                            
-                            debugTmp = debug
-                            debug = false
-                            
-                            return reb.Promise('pwa-main')
-                        })
+                        debugTmp = debug
+                        debug = false
+                        
+                        setTimeout(loadApp, 100)
+                        
+                        return reb.Promise('pwa-main')
+                    })
+                    .then(function(text) {
+                        console.log('yoyo')
                     })
                 })
                 .then(function() {
-                    debug = debugTmp
-                    debugTmp = false
+                    
                 })
             }
         }
@@ -81,6 +76,39 @@ if ('serviceWorker' in navigator) {
     })
 } else {
     log('Your browser does not support service workers.')
+}
+
+var loadApp = function(msg, force) {
+    if (pwaLoaded) {
+        debug = debugTmp
+        debugTmp = false
+        
+        log('Rebol PWA - Loading vid.reb')
+        
+        fetch('vid.reb')
+        .then(function(response) {
+            return response.text()
+        })
+        .then(function(text) {
+            log('Rebol PWA - Running vid.reb')
+            
+            //runRebol(text)
+            
+            log('Rebol PWA - Loading index.reb')
+            
+            return fetch('index.reb')
+            .then(function(response) {
+                return response.text()
+            })
+            .then(function(text) {
+                log('Rebol PWA - Running index.reb')
+                
+                runRebol(text.replace(/Rebol \[[^\]]*\]/s, ''))
+            })
+        })
+    } else {
+        setTimeout(loadApp, 100)
+    }
 }
 
 var log = function(msg, force) {

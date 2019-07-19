@@ -5,7 +5,7 @@ Rebol [
     DebugLevel: 10
 ]
 
-; load %vid.reb
+load %vid.reb
 
 ; load %vid.reb isn't able to wait until loading is done
 ; and so look into defining these in a header property

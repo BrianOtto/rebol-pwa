@@ -98,10 +98,7 @@ write %web/js/index.js js
 
 write %web/js/libr3.js read %src/lib/ren-c/libr3.js
 
-index-src: to text! read %src/index.reb
-index-web: to text! read %web/index.reb
-
-write %web/index.reb unspaced [index-src "^/" index-web]
+write %web/pwa.reb read %src/index.reb
 
 worker-lib: to text! read %src/lib/ren-c/libr3.worker.js
 worker-src: to text! read %src/worker.js
