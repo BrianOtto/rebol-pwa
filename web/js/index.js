@@ -83,7 +83,7 @@ var loadApp = function() {
         .then(function(text) {
             log('Rebol PWA - Running index.reb')
             
-            runRebol(text.replace(/Rebol \[[^\]]*\]/s, ''))
+            runRebol(text.replace(/Rebol \[[^\]]*\]/, ''))
         })
     }
 }

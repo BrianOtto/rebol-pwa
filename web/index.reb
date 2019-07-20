@@ -1,73 +1,74 @@
+vid-init: js-native [] {
+    window.vidLayouts = []
+    
+    window.vidAddElement = function(id, element) {
+        if (window.vidLayouts[id] == null) {
+            window.vidLayouts[id] = document.createDocumentFragment()
+        }
+        
+        window.vidLayouts[id].appendChild(element)
+    }
+}
+
+vid-style-h1: js-native [
+    id [integer!]
+    text [text!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    var text = reb.Spell(reb.ArgR('text'))
+    
+    element = document.createElement('h1')
+    element.textContent = text
+    
+    vidAddElement(id, element)
+}
+
+view: js-native [
+    id [integer!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    
+    document.querySelector('body').appendChild(window.vidLayouts[id])
+}
+
+layout: func [
+    specs [block!]
+][
+    vid-layout-id: me + 1
+    id: vid-layout-id
+    
+    parse specs rules: [ any [
+        'h1 set text text! 
+            (vid-style-h1 id text)
+        
+        |
+        
+        'h2 set text text! 
+            (probe text)
+        
+        |
+    ] ]
+    
+    id
+]
+
+vid-layout-id: 0
+
+vid-init
+
 Rebol [
     Title: "Rebol PWA"
     Version: "0.1.0"
     ThemeColor: "#FFFFFF"
     DebugLevel: 10
+    IncludeVID: true
 ]
 
-load %vid.reb
-
-init: js-native [] {
-    // TODO: move this into the src/lib/vid-js library
-    
-    var doc = document.querySelector('body')
-    doc.style.margin = '10px'
-    
-    var div = document.createElement('div')
-    div.style.justifyContent = 'center'
-    div.style.display = 'flex'
-    
-    var button = document.createElement('button')
-    button.innerHTML = 'Install Rebol PWA'
-    button.id = 'pwaButton'
-    button.disabled = true
-    
-    button.onclick = function() {
-        pwaPrompt.prompt()
-        
-        pwaPrompt.userChoice
-        .then((choice) => {
-            if (choice.outcome === 'accepted') {
-                pwaIsInstalled()
-            }
-            
-            pwaPrompt = null
-        })
-    }
-    
-    div.appendChild(button)
-    doc.appendChild(div)
-    
-    pwaCheckPrompt = function() {
-        var pwaButton = document.querySelector('#pwaButton')
-        
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            pwaIsInstalled()
-        } else {
-            // TODO: set an install flag in local storage 
-            //       and check for this before looping
-            if (pwaPrompt === null) {
-                setTimeout(pwaCheckPrompt, 100)
-            } else {
-                pwaButton.disabled = false
-            }
-        }
-    }
-     
-    pwaIsInstalled = function() {
-        var pwaButton = document.querySelector('#pwaButton')
-        
-        pwaButton.innerHTML = 'Rebol PWA is installed'
-        pwaButton.style.background = '#FFF'
-        pwaButton.style.border = '1px solid #000'
-        pwaButton.style.outline = 'none'
-        pwaButton.style.padding = '10px'
-        
-        pwaButton.onclick = null
-        pwaButton.disabled = false
-    }
-    
-    pwaCheckPrompt()
-}
+init: func [] [
+    view layout [
+        h1 "Hello"
+        h2 "World"
+    ]
+]
 
 init

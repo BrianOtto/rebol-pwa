@@ -4,12 +4,14 @@ write-stdout: function [
     text [text! char!]
 ][
     if char? text [text: my to-text]
-    trim trim/with text ">>"
     
-    if not empty? text [
-        if not find text "Welcome to Rebol" [
-            pwa-main-stdout text
-        ]
+    if not any [
+        empty? trim text
+        find/match text "Welcome to Rebol"
+        find/match text ">>"
+        find/match text "=="
+    ][
+        pwa-main-stdout text
     ]
 ]
 

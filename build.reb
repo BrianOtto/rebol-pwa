@@ -38,7 +38,6 @@ print "^/Building PWA ..."
 
 delete-dir %web/
 
-copy-dir %src/lib/vid-js/ %web/
 copy-dir %src/lib/pwa/ %web/
 copy-dir %app/ %web/
 
@@ -119,6 +118,25 @@ for-each url cache-urls [
 replace worker-src "%cache-urls%" cache-urls-string
 
 write %web/worker.js unspaced [worker-lib "^/" worker-src]
+
+attempt [
+    headerIncludeVID: (first data)/includevid
+    
+    if headerIncludeVID [
+        vid-init: to text! read %src/lib/vid-js/vid-init.reb
+        vid-styles: to text! read %src/lib/vid-js/vid-styles.reb
+        vid: to text! read %src/lib/vid-js/vid.reb
+        
+        index: to text! read %web/index.reb
+        
+        write %web/index.reb unspaced [
+            vid-init "^/"
+            vid-styles "^/"
+            vid "^/"
+            index
+        ]
+    ]
+]
 
 print "^/Done"
 print "^/You can run the application by pointing a web server to"
