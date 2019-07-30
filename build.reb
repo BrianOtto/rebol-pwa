@@ -135,6 +135,9 @@ attempt [
             vid "^/"
             index
         ]
+        
+        make-dir %web/css
+        write %web/css/vid.css read %src/lib/vid-js/vid.css
     ]
 ]
 

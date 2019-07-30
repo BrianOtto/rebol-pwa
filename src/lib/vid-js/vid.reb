@@ -3,7 +3,7 @@ view: js-native [
 ]{
     var id = reb.Spell(reb.ArgR('id'))
     
-    document.querySelector('body').appendChild(window.vidLayouts[id])
+    document.querySelector('#app').appendChild(window.vidLayouts[id])
 }
 
 layout: func [
@@ -19,7 +19,7 @@ layout: func [
         |
         
         'h2 set text text! 
-            (probe text)
+            (vid-style-h2 id text)
         
         |
     ] ]

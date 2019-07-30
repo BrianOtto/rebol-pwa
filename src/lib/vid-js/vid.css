@@ -1,0 +1,18 @@
+body {
+    margin: 10px;
+    padding: 0px;
+}
+
+/* TODO: make the #app styles configurable */
+
+#app {
+    display: grid;
+    grid-template-columns: repeat(12, max-content);
+    grid-template-rows: auto-fill;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+}
+
+h1, h2, h3, h4, h5 {
+    color: red;
+}
