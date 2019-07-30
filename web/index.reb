@@ -20,30 +20,75 @@ vid-init: js-native [] {
     document.querySelector('head').appendChild(window.vidCSS)
 }
 
-vid-style-h1: js-native [
+vid-style-text: js-native [
     id [integer!]
+    style [text!]
     text [text!]
 ]{
     var id = reb.Spell(reb.ArgR('id'))
+    var style = reb.Spell(reb.ArgR('style'))
     var text = reb.Spell(reb.ArgR('text'))
     
-    element = document.createElement('h1')
-    element.textContent = text
+    var tag = ''
+    var cls = false
     
-    vidAddElement(id, element)
-}
-
-vid-style-h2: js-native [
-    id [integer!]
-    text [text!]
-]{
-    var id = reb.Spell(reb.ArgR('id'))
-    var text = reb.Spell(reb.ArgR('text'))
+    switch (style) {
+        case 'title' :
+        case 'banner' :
+            tag = 'h1'
+            break
+        case 'h1' :
+        case 'vh1' :
+            tag = 'h2'
+            break
+        case 'h2' :
+        case 'vh2' :
+            tag = 'h3'
+            break
+        case 'h3' :
+        case 'vh3' :
+            tag = 'h4'
+            break
+        case 'h4' :
+            tag = 'h5'
+            break
+        case 'h5' :
+            tag = 'h6'
+            break
+        case 'text' :
+        case 'txt' :
+        case 'vtext' :
+        case 'label' :
+            tag = 'span'
+            break
+        case 'tt' :
+        case 'code' :
+            tag = 'code'
+    }
     
-    element = document.createElement('h2')
-    element.textContent = text
+    switch (style) {
+        case 'banner' :
+        case 'vh1' :
+        case 'vh2' :
+        case 'vh3' :
+        case 'text' :
+        case 'txt' :
+        case 'vtext' :
+        case 'code' :
+        case 'label' :
+            cls = true
+    }
     
-    vidAddElement(id, element)
+    if (tag != '') {
+        element = document.createElement(tag)
+        element.textContent = text
+        
+        if (cls) {
+            element.className = 'vid-' + style
+        }
+        
+        vidAddElement(id, element)
+    }
 }
 
 view: js-native [
@@ -51,7 +96,9 @@ view: js-native [
 ]{
     var id = reb.Spell(reb.ArgR('id'))
     
-    document.querySelector('#app').appendChild(window.vidLayouts[id])
+    if (typeof window.vidLayouts[id] != 'undefined') {
+        document.querySelector('#app').appendChild(window.vidLayouts[id])
+    }
 }
 
 layout: func [
@@ -61,15 +108,25 @@ layout: func [
     id: vid-layout-id
     
     parse specs rules: [ any [
-        'h1 set text text! 
-            (vid-style-h1 id text)
-        
-        |
-        
-        'h2 set text text! 
-            (vid-style-h2 id text)
-        
-        |
+        copy style [
+              'title  ; <h1>
+            | 'h1     ; <h2>
+            | 'h2     ; <h3>
+            | 'h3     ; <h4>
+            | 'h4     ; <h5>
+            | 'h5     ; <h6>
+            | 'banner ; <h1 class="vid-banner">
+            | 'vh1    ; <h2 class="vid-vh1">
+            | 'vh2    ; <h3 class="vid-vh2">
+            | 'vh3    ; <h4 class="vid-vh3">
+            | 'text   ; <span>
+            | 'txt    ; <span>
+            | 'vtext  ; <span class="vid-vtext">
+            | 'tt     ; <code>
+            | 'code   ; <code class="vid-code">
+            | 'label  ; <span class="vid-label">
+        ] set text text! 
+            (vid-style-text id to text! style text)
     ] ]
     
     id
@@ -89,8 +146,16 @@ Rebol [
 
 init: func [] [
     view layout [
-        h1 "Hello"
-        h2 "World"
+        title "Title"
+        h1 "Heading 1"
+        h2 "Heading 2"
+        h3 "Heading 3"
+        h4 "Heading 4"
+        h5 "Heading 5"
+        banner "Banner"
+        vh1 "Video Heading 1"
+        vh2 "Video Heading 2"
+        vh3 "Video Heading 3"
     ]
 ]
 

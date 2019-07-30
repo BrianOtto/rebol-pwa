@@ -1,18 +1,54 @@
 body {
     margin: 10px;
     padding: 0px;
+    font-family: sans-serif;
+    background-color: #C8C8C8;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px;
 }
 
 /* TODO: make the #app styles configurable */
 
 #app {
     display: grid;
-    grid-template-columns: repeat(12, max-content);
-    grid-template-rows: auto-fill;
+    grid-template-columns: 1f;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
 }
 
-h1, h2, h3, h4, h5 {
-    color: red;
+.vid-banner,
+.vid-vh1,
+.vid-vh2,
+.vid-vh3 {
+    color: #FAD700;
+}
+
+.vid-banner {
+    text-shadow: 4px 4px #646464;
+}
+
+.vid-vh1 {
+    text-shadow: 3px 3px #646464;
+}
+
+.vid-vh2 {
+    text-shadow: 2px 2px #646464;
+}
+
+.vid-vh3 {
+    text-shadow: 1px 1px #646464;
+}
+
+.vid-vtext {
+    /* TODO */
+}
+
+.vid-code {
+    font-weight: bold;
+}
+
+.vid-label {
+    /* TODO */
 }
