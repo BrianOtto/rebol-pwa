@@ -18,27 +18,24 @@ h1, h2, h3, h4, h5, h6 {
     grid-column-gap: 10px;
 }
 
-.vid-banner,
-.vid-vh1,
-.vid-vh2,
-.vid-vh3 {
+.vid-banner {
+    text-shadow: 4px 4px #646464;
     color: #FAD700;
 }
 
-.vid-banner {
-    text-shadow: 4px 4px #646464;
+.vid-vh1,
+.vid-vh2,
+.vid-vh3 {
+    color: #FFFFFF;
 }
 
 .vid-vh1 {
     text-shadow: 3px 3px #646464;
 }
 
-.vid-vh2 {
-    text-shadow: 2px 2px #646464;
-}
-
+.vid-vh2,
 .vid-vh3 {
-    text-shadow: 1px 1px #646464;
+    text-shadow: 2px 2px #646464;
 }
 
 .vid-vtext {
