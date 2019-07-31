@@ -13,7 +13,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #app {
     display: grid;
-    grid-template-columns: 1f;
+    grid-template-columns: auto;
+    grid-auto-flow: column;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
 }
