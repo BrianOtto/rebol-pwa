@@ -40,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .vid-vtext {
-    /* TODO */
+    color: #FFFFFF;
 }
 
 .vid-code {
@@ -48,5 +48,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .vid-label {
-    /* TODO */
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 2px 2px #646464;
 }

@@ -18,6 +18,8 @@ init: func [] [
         vh1 "Video Heading 1"
         vh2 "Video Heading 2"
         vh3 "Video Heading 3"
+        vtext "Video Body Text"
+        label "Label"
     ]
 ]
 
