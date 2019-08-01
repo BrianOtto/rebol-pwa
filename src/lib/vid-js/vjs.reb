@@ -32,9 +32,19 @@ layout: func [
             | 'tt     ; <code>
             | 'code   ; <code class="vjs-code">
             | 'label  ; <span class="vjs-label">
-        ] set text text! 
+        ] opt set text text! 
             (vjs-style-text id to text! style text)
+            (text: "")
         
+        |
+        
+        copy style [
+              'field  ; <input type="text">
+            | 'info   ; <input type="text" readonly>
+        ] opt set text text! 
+            (vjs-style-field id to text! style text)
+            (text: "")
+            
         |
         
         'across

@@ -130,6 +130,30 @@ vjs-style-text: js-native [
     }
 }
 
+vjs-style-field: js-native [
+    id [integer!]
+    style [text!]
+    text [text!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    var style = reb.Spell(reb.ArgR('style'))
+    var text = reb.Spell(reb.ArgR('text'))
+    
+    switch (style) {
+        case 'field' :
+            element = document.createElement('input')
+            element.type = 'text'
+            element.value = text
+            break
+        case 'info' :
+            element = document.createElement('input')
+            element.type = 'text'
+            element.disabled = true
+            element.value = text
+    }
+    
+    vjsAddElement(id, element)
+}
 view: js-native [
     id [integer!]
 ]{
@@ -164,9 +188,19 @@ layout: func [
             | 'tt     ; <code>
             | 'code   ; <code class="vjs-code">
             | 'label  ; <span class="vjs-label">
-        ] set text text! 
+        ] opt set text text! 
             (vjs-style-text id to text! style text)
+            (text: "")
         
+        |
+        
+        copy style [
+              'field  ; <input type="text">
+            | 'info   ; <input type="text" readonly>
+        ] opt set text text! 
+            (vjs-style-field id to text! style text)
+            (text: "")
+            
         |
         
         'across
@@ -215,6 +249,10 @@ init: func [] [
         vh3 "Video Heading 3"
         vtext "Video Body Text"
         label "Label"
+        field
+        field "Your Name"
+        info
+        info "First Last"
     ]
 ]
 

@@ -9,6 +9,22 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0px;
 }
 
+input[type="text"] {
+    border-width: 2px;
+    border-style: inset;
+    border-top-color: #383D42;
+    border-left-color: #383D42;
+    border-right-color: #A3B2C1;
+    border-bottom-color: #A3B2C1;
+    padding: 4px;
+    padding-top: 5px;
+    height: 15px;
+}
+
+input[type="text"]:disabled {
+    background: #C8C8C8;
+}
+
 /* TODO: make the #app gaps configurable */
 
 #app {

@@ -86,3 +86,28 @@ vjs-style-text: js-native [
         vjsAddElement(id, element)
     }
 }
+
+vjs-style-field: js-native [
+    id [integer!]
+    style [text!]
+    text [text!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    var style = reb.Spell(reb.ArgR('style'))
+    var text = reb.Spell(reb.ArgR('text'))
+    
+    switch (style) {
+        case 'field' :
+            element = document.createElement('input')
+            element.type = 'text'
+            element.value = text
+            break
+        case 'info' :
+            element = document.createElement('input')
+            element.type = 'text'
+            element.disabled = true
+            element.value = text
+    }
+    
+    vjsAddElement(id, element)
+}

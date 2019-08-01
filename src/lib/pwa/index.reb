@@ -23,6 +23,10 @@ init: func [] [
         vh3 "Video Heading 3"
         vtext "Video Body Text"
         label "Label"
+        field
+        field "Your Name"
+        info
+        info "First Last"
     ]
 ]
 
