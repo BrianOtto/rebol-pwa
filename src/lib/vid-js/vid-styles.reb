@@ -1,3 +1,21 @@
+vid-style-below: js-native [
+    enable [integer!]
+    ret [integer!]
+] {
+    var enable = reb.UnboxInteger(reb.ArgR('enable'))
+    var ret = reb.UnboxInteger(reb.ArgR('ret'))
+    
+    if (enable == 1) {
+        window.vidBelow = true
+    } else {
+        window.vidBelow = false
+    }
+    
+    if (ret == 1) {
+        window.vidReturn = true
+    }
+}
+
 vid-style-text: js-native [
     id [integer!]
     style [text!]

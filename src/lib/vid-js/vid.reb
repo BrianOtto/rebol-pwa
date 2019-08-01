@@ -34,6 +34,21 @@ layout: func [
             | 'label  ; <span class="vid-label">
         ] set text text! 
             (vid-style-text id to text! style text)
+        
+        |
+        
+        'across
+            (vid-style-below 0 0)
+        
+        |
+        
+        'below
+            (vid-style-below 1 0)
+        
+        |
+        
+        'return
+            (vid-style-below 1 1)
     ] ]
     
     id

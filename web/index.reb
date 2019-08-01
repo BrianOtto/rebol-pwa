@@ -1,9 +1,28 @@
 vid-init: js-native [] {
     window.vidLayouts = []
     window.vidCSS = document.createElement('link')
+    window.vidBelow = false
+    window.vidReturn = false
+    window.vidCols = 1
+    window.vidRows = 1
     
     window.vidAddElement = function(id, element) {
         div = document.createElement('div')
+        
+        if (window.vidBelow) {
+            window.vidCols = 1
+            window.vidRows++
+            
+            if (window.vidReturn) {
+                window.vidBelow = false
+            }
+        }
+        
+        window.vidReturn = false
+        
+        div.style.gridRowStart = window.vidRows
+        div.style.gridColumnStart = window.vidCols
+        
         div.appendChild(element)
         
         if (window.vidLayouts[id] == null) {
@@ -11,6 +30,8 @@ vid-init: js-native [] {
         }
         
         window.vidLayouts[id].appendChild(div)
+        
+        window.vidCols++
     }
     
     window.vidCSS.rel  = 'stylesheet'
@@ -18,6 +39,24 @@ vid-init: js-native [] {
     window.vidCSS.href = 'css/vid.css'
     
     document.querySelector('head').appendChild(window.vidCSS)
+}
+
+vid-style-below: js-native [
+    enable [integer!]
+    ret [integer!]
+] {
+    var enable = reb.UnboxInteger(reb.ArgR('enable'))
+    var ret = reb.UnboxInteger(reb.ArgR('ret'))
+    
+    if (enable == 1) {
+        window.vidBelow = true
+    } else {
+        window.vidBelow = false
+    }
+    
+    if (ret == 1) {
+        window.vidReturn = true
+    }
 }
 
 vid-style-text: js-native [
@@ -127,6 +166,21 @@ layout: func [
             | 'label  ; <span class="vid-label">
         ] set text text! 
             (vid-style-text id to text! style text)
+        
+        |
+        
+        'across
+            (vid-style-below 0 0)
+        
+        |
+        
+        'below
+            (vid-style-below 1 0)
+        
+        |
+        
+        'return
+            (vid-style-below 1 1)
     ] ]
     
     id
@@ -146,12 +200,15 @@ Rebol [
 
 init: func [] [
     view layout [
+        across
         title "Title"
         h1 "Heading 1"
         h2 "Heading 2"
+        return
         h3 "Heading 3"
         h4 "Heading 4"
         h5 "Heading 5"
+        below
         banner "Banner"
         vh1 "Video Heading 1"
         vh2 "Video Heading 2"
