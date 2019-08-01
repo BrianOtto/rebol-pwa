@@ -1,6 +1,6 @@
 ; moving the pwa prompt code here temporarily
-; this needs to be refactored into the VID API
-vid-prompt: js-native [] {
+; this needs to be refactored into the VID-JS API
+vjs-prompt: js-native [] {
     var doc = document.querySelector('body')
     doc.style.margin = '10px'
     

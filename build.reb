@@ -123,21 +123,21 @@ attempt [
     headerIncludeVID: (first data)/includevid
     
     if headerIncludeVID [
-        vid-init: to text! read %src/lib/vid-js/vid-init.reb
-        vid-styles: to text! read %src/lib/vid-js/vid-styles.reb
-        vid: to text! read %src/lib/vid-js/vid.reb
+        vjs-init: to text! read %src/lib/vid-js/vjs-init.reb
+        vjs-styles: to text! read %src/lib/vid-js/vjs-styles.reb
+        vjs: to text! read %src/lib/vid-js/vjs.reb
         
         index: to text! read %web/index.reb
         
         write %web/index.reb unspaced [
-            vid-init "^/"
-            vid-styles "^/"
-            vid "^/"
+            vjs-init "^/"
+            vjs-styles "^/"
+            vjs "^/"
             index
         ]
         
         make-dir %web/css
-        write %web/css/vid.css read %src/lib/vid-js/vid.css
+        write %web/css/vjs.css read %src/lib/vid-js/vjs.css
     ]
 ]
 

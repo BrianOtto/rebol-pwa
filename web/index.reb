@@ -1,47 +1,47 @@
-vid-init: js-native [] {
-    window.vidLayouts = []
-    window.vidCSS = document.createElement('link')
-    window.vidBelow = false
-    window.vidReturn = false
-    window.vidCols = 1
-    window.vidRows = 1
+vjs-init: js-native [] {
+    window.vjsLayouts = []
+    window.vjsCSS = document.createElement('link')
+    window.vjsBelow = false
+    window.vjsReturn = false
+    window.vjsCols = 1
+    window.vjsRows = 1
     
-    window.vidAddElement = function(id, element) {
+    window.vjsAddElement = function(id, element) {
         div = document.createElement('div')
         
-        if (window.vidBelow) {
-            window.vidCols = 1
-            window.vidRows++
+        if (window.vjsBelow) {
+            window.vjsCols = 1
+            window.vjsRows++
             
-            if (window.vidReturn) {
-                window.vidBelow = false
+            if (window.vjsReturn) {
+                window.vjsBelow = false
             }
         }
         
-        window.vidReturn = false
+        window.vjsReturn = false
         
-        div.style.gridRowStart = window.vidRows
-        div.style.gridColumnStart = window.vidCols
+        div.style.gridRowStart = window.vjsRows
+        div.style.gridColumnStart = window.vjsCols
         
         div.appendChild(element)
         
-        if (window.vidLayouts[id] == null) {
-            window.vidLayouts[id] = document.createDocumentFragment()
+        if (window.vjsLayouts[id] == null) {
+            window.vjsLayouts[id] = document.createDocumentFragment()
         }
         
-        window.vidLayouts[id].appendChild(div)
+        window.vjsLayouts[id].appendChild(div)
         
-        window.vidCols++
+        window.vjsCols++
     }
     
-    window.vidCSS.rel  = 'stylesheet'
-    window.vidCSS.type = 'text/css'
-    window.vidCSS.href = 'css/vid.css'
+    window.vjsCSS.rel  = 'stylesheet'
+    window.vjsCSS.type = 'text/css'
+    window.vjsCSS.href = 'css/vjs.css'
     
-    document.querySelector('head').appendChild(window.vidCSS)
+    document.querySelector('head').appendChild(window.vjsCSS)
 }
 
-vid-style-below: js-native [
+vjs-style-below: js-native [
     enable [integer!]
     ret [integer!]
 ] {
@@ -49,17 +49,17 @@ vid-style-below: js-native [
     var ret = reb.UnboxInteger(reb.ArgR('ret'))
     
     if (enable == 1) {
-        window.vidBelow = true
+        window.vjsBelow = true
     } else {
-        window.vidBelow = false
+        window.vjsBelow = false
     }
     
     if (ret == 1) {
-        window.vidReturn = true
+        window.vjsReturn = true
     }
 }
 
-vid-style-text: js-native [
+vjs-style-text: js-native [
     id [integer!]
     style [text!]
     text [text!]
@@ -123,10 +123,10 @@ vid-style-text: js-native [
         element.textContent = text
         
         if (cls) {
-            element.className = 'vid-' + style
+            element.className = 'vjs-' + style
         }
         
-        vidAddElement(id, element)
+        vjsAddElement(id, element)
     }
 }
 
@@ -135,16 +135,16 @@ view: js-native [
 ]{
     var id = reb.Spell(reb.ArgR('id'))
     
-    if (typeof window.vidLayouts[id] != 'undefined') {
-        document.querySelector('#app').appendChild(window.vidLayouts[id])
+    if (typeof window.vjsLayouts[id] != 'undefined') {
+        document.querySelector('#app').appendChild(window.vjsLayouts[id])
     }
 }
 
 layout: func [
     specs [block!]
 ][
-    vid-layout-id: me + 1
-    id: vid-layout-id
+    vjs-layout-id: me + 1
+    id: vjs-layout-id
     
     parse specs rules: [ any [
         copy style [
@@ -154,45 +154,45 @@ layout: func [
             | 'h3     ; <h4>
             | 'h4     ; <h5>
             | 'h5     ; <h6>
-            | 'banner ; <h1 class="vid-banner">
-            | 'vh1    ; <h2 class="vid-vh1">
-            | 'vh2    ; <h3 class="vid-vh2">
-            | 'vh3    ; <h4 class="vid-vh3">
+            | 'banner ; <h1 class="vjs-banner">
+            | 'vh1    ; <h2 class="vjs-vh1">
+            | 'vh2    ; <h3 class="vjs-vh2">
+            | 'vh3    ; <h4 class="vjs-vh3">
             | 'text   ; <span>
             | 'txt    ; <span>
-            | 'vtext  ; <span class="vid-vtext">
+            | 'vtext  ; <span class="vjs-vtext">
             | 'tt     ; <code>
-            | 'code   ; <code class="vid-code">
-            | 'label  ; <span class="vid-label">
+            | 'code   ; <code class="vjs-code">
+            | 'label  ; <span class="vjs-label">
         ] set text text! 
-            (vid-style-text id to text! style text)
+            (vjs-style-text id to text! style text)
         
         |
         
         'across
-            (vid-style-below 0 0)
+            (vjs-style-below 0 0)
         
         |
         
         'below
-            (vid-style-below 1 0)
+            (vjs-style-below 1 0)
         
         |
         
         'return
-            (vid-style-below 1 1)
+            (vjs-style-below 1 1)
     ] ]
     
     id
 ]
 
-vid-layout-id: 0
+vjs-layout-id: 0
 
-vid-init
+vjs-init
 
 Rebol [
     Title: "Rebol PWA"
-    Version: "0.1.0"
+    Version: "0.1.1"
     ThemeColor: "#FFFFFF"
     DebugLevel: 10
     IncludeVID: true

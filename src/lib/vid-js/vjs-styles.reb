@@ -1,4 +1,4 @@
-vid-style-below: js-native [
+vjs-style-below: js-native [
     enable [integer!]
     ret [integer!]
 ] {
@@ -6,17 +6,17 @@ vid-style-below: js-native [
     var ret = reb.UnboxInteger(reb.ArgR('ret'))
     
     if (enable == 1) {
-        window.vidBelow = true
+        window.vjsBelow = true
     } else {
-        window.vidBelow = false
+        window.vjsBelow = false
     }
     
     if (ret == 1) {
-        window.vidReturn = true
+        window.vjsReturn = true
     }
 }
 
-vid-style-text: js-native [
+vjs-style-text: js-native [
     id [integer!]
     style [text!]
     text [text!]
@@ -80,9 +80,9 @@ vid-style-text: js-native [
         element.textContent = text
         
         if (cls) {
-            element.className = 'vid-' + style
+            element.className = 'vjs-' + style
         }
         
-        vidAddElement(id, element)
+        vjsAddElement(id, element)
     }
 }

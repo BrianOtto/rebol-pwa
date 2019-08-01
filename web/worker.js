@@ -195,7 +195,7 @@ this.onmessage = function(e) {
 
 
 
-var cacheName = 'rebol-pwa-0.1.0'
+var cacheName = 'rebol-pwa-0.1.1'
 var cacheURLs = [
 	'./',
 	'./android-chrome-192x192.png',

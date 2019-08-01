@@ -1,6 +1,6 @@
 Rebol [
     Title: "Rebol PWA"
-    Version: "0.1.0"
+    Version: "0.1.1"
     ThemeColor: "#FFFFFF"
     DebugLevel: 10
     IncludeVID: true
