@@ -1,37 +1,29 @@
 vjs-init: js-native [] {
     window.vjsLayouts = []
     window.vjsCSS = document.createElement('link')
-    window.vjsBelow = false
+    
+    window.vjsAcross = true
     window.vjsReturn = false
-    window.vjsCols = 1
-    window.vjsRows = 1
     
     window.vjsAddElement = function(id, element) {
-        div = document.createElement('div')
-        
-        if (window.vjsBelow) {
-            window.vjsCols = 1
-            window.vjsRows++
-            
-            if (window.vjsReturn) {
-                window.vjsBelow = false
-            }
-        }
-        
-        window.vjsReturn = false
-        
-        div.style.gridRowStart = window.vjsRows
-        div.style.gridColumnStart = window.vjsCols
-        
-        div.appendChild(element)
-        
         if (window.vjsLayouts[id] == null) {
             window.vjsLayouts[id] = document.createDocumentFragment()
         }
         
-        window.vjsLayouts[id].appendChild(div)
+        if (window.vjsAcross == false) {
+            var br = document.createElement('br')
+            window.vjsLayouts[id].appendChild(br)
+        }
         
-        window.vjsCols++
+        if (window.vjsReturn) {
+            window.vjsAcross = !window.vjsAcross
+            window.vjsReturn = false
+        }
+        
+        var div = document.createElement('div')
+        div.appendChild(element)
+        
+        window.vjsLayouts[id].appendChild(div)
     }
     
     window.vjsCSS.rel  = 'stylesheet'
@@ -41,22 +33,21 @@ vjs-init: js-native [] {
     document.querySelector('head').appendChild(window.vjsCSS)
 }
 
-vjs-style-below: js-native [
+vjs-style-across: js-native [
     enable [integer!]
-    ret [integer!]
 ] {
     var enable = reb.UnboxInteger(reb.ArgR('enable'))
-    var ret = reb.UnboxInteger(reb.ArgR('ret'))
     
     if (enable == 1) {
-        window.vjsBelow = true
+        window.vjsAcross = true
     } else {
-        window.vjsBelow = false
+        window.vjsAcross = false
     }
-    
-    if (ret == 1) {
-        window.vjsReturn = true
-    }
+}
+
+vjs-style-return: js-native [] {
+    window.vjsAcross = !window.vjsAcross
+    window.vjsReturn = true
 }
 
 vjs-style-text: js-native [
@@ -204,17 +195,17 @@ layout: func [
         |
         
         'across
-            (vjs-style-below 0 0)
+            (vjs-style-across 1)
         
         |
         
         'below
-            (vjs-style-below 1 0)
+            (vjs-style-across 0)
         
         |
         
         'return
-            (vjs-style-below 1 1)
+            (vjs-style-return)
     ] ]
     
     id

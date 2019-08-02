@@ -1,19 +1,18 @@
-vjs-style-below: js-native [
+vjs-style-across: js-native [
     enable [integer!]
-    ret [integer!]
 ] {
     var enable = reb.UnboxInteger(reb.ArgR('enable'))
-    var ret = reb.UnboxInteger(reb.ArgR('ret'))
     
     if (enable == 1) {
-        window.vjsBelow = true
+        window.vjsAcross = true
     } else {
-        window.vjsBelow = false
+        window.vjsAcross = false
     }
-    
-    if (ret == 1) {
-        window.vjsReturn = true
-    }
+}
+
+vjs-style-return: js-native [] {
+    window.vjsAcross = !window.vjsAcross
+    window.vjsReturn = true
 }
 
 vjs-style-text: js-native [

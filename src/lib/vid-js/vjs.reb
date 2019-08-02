@@ -48,17 +48,17 @@ layout: func [
         |
         
         'across
-            (vjs-style-below 0 0)
+            (vjs-style-across 1)
         
         |
         
         'below
-            (vjs-style-below 1 0)
+            (vjs-style-across 0)
         
         |
         
         'return
-            (vjs-style-below 1 1)
+            (vjs-style-return)
     ] ]
     
     id

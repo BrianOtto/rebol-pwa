@@ -1,37 +1,29 @@
 vjs-init: js-native [] {
     window.vjsLayouts = []
     window.vjsCSS = document.createElement('link')
-    window.vjsBelow = false
+    
+    window.vjsAcross = true
     window.vjsReturn = false
-    window.vjsCols = 1
-    window.vjsRows = 1
     
     window.vjsAddElement = function(id, element) {
-        div = document.createElement('div')
-        
-        if (window.vjsBelow) {
-            window.vjsCols = 1
-            window.vjsRows++
-            
-            if (window.vjsReturn) {
-                window.vjsBelow = false
-            }
-        }
-        
-        window.vjsReturn = false
-        
-        div.style.gridRowStart = window.vjsRows
-        div.style.gridColumnStart = window.vjsCols
-        
-        div.appendChild(element)
-        
         if (window.vjsLayouts[id] == null) {
             window.vjsLayouts[id] = document.createDocumentFragment()
         }
         
-        window.vjsLayouts[id].appendChild(div)
+        if (window.vjsAcross == false) {
+            var br = document.createElement('br')
+            window.vjsLayouts[id].appendChild(br)
+        }
         
-        window.vjsCols++
+        if (window.vjsReturn) {
+            window.vjsAcross = !window.vjsAcross
+            window.vjsReturn = false
+        }
+        
+        var div = document.createElement('div')
+        div.appendChild(element)
+        
+        window.vjsLayouts[id].appendChild(div)
     }
     
     window.vjsCSS.rel  = 'stylesheet'

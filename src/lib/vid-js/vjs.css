@@ -1,5 +1,7 @@
+/* TODO: make the body and #app > div margins configurable */
+
 body {
-    margin: 10px;
+    margin: 5px;
     padding: 0px;
     font-family: sans-serif;
     background-color: #C8C8C8;
@@ -25,14 +27,9 @@ input[type="text"]:disabled {
     background: #C8C8C8;
 }
 
-/* TODO: make the #app gaps configurable */
-
-#app {
-    display: grid;
-    grid-template-columns: auto;
-    grid-auto-flow: column;
-    grid-row-gap: 10px;
-    grid-column-gap: 10px;
+#app > div {
+    display: inline-block;
+    margin: 5px;
 }
 
 .vjs-banner {
