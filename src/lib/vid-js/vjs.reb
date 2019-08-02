@@ -41,6 +41,7 @@ layout: func [
         copy style [
               'field  ; <input type="text">
             | 'info   ; <input type="text" readonly>
+            | 'button ; <input type="button">
         ] opt set text text! 
             (vjs-style-field id to text! style text)
             (text: "")

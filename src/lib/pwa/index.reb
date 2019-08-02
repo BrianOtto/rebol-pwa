@@ -24,9 +24,10 @@ init: func [] [
         vtext "Video Body Text"
         label "Label"
         field
-        field "Your Name"
+        field "Field"
         info
-        info "First Last"
+        info "Info"
+        button "Button"
     ]
 ]
 

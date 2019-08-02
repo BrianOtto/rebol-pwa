@@ -141,6 +141,11 @@ vjs-style-field: js-native [
             element.type = 'text'
             element.disabled = true
             element.value = text
+            break
+        case 'button' :
+            element = document.createElement('input')
+            element.type = 'button'
+            element.value = text
     }
     
     vjsAddElement(id, element)
@@ -188,6 +193,7 @@ layout: func [
         copy style [
               'field  ; <input type="text">
             | 'info   ; <input type="text" readonly>
+            | 'button ; <input type="button">
         ] opt set text text! 
             (vjs-style-field id to text! style text)
             (text: "")
@@ -241,9 +247,10 @@ init: func [] [
         vtext "Video Body Text"
         label "Label"
         field
-        field "Your Name"
+        field "Field"
         info
-        info "First Last"
+        info "Info"
+        button "Button"
     ]
 ]
 

@@ -106,6 +106,11 @@ vjs-style-field: js-native [
             element.type = 'text'
             element.disabled = true
             element.value = text
+            break
+        case 'button' :
+            element = document.createElement('input')
+            element.type = 'button'
+            element.value = text
     }
     
     vjsAddElement(id, element)
