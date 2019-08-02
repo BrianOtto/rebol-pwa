@@ -5,6 +5,7 @@ vjs-init: js-native [] {
     window.vjsAcross = true
     window.vjsReturn = false
     window.vjsTabs = 0
+    window.vjsTab = false
     
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {
@@ -22,6 +23,12 @@ vjs-init: js-native [] {
         }
         
         var div = document.createElement('div')
+        
+        if (window.vjsTab) {
+            div.setAttribute('vjs-tab', window.vjsTabs)
+            window.vjsTab = false
+        }
+        
         div.appendChild(element)
         
         window.vjsLayouts[id].appendChild(div)
@@ -160,15 +167,8 @@ vjs-style-field: js-native [
     vjsAddElement(id, element)
 }
 
-vjs-style-tab: js-native [
-    id [integer!]
-]{
-    var id = reb.Spell(reb.ArgR('id'))
-    
-    element = document.createElement('div')
-    element.style.width = (window.vjsTabs / 5) + 'px'
-    
-    vjsAddElement(id, element)
+vjs-style-tab: js-native []{
+    window.vjsTab = true
 }
 view: js-native [
     id [integer!]
@@ -177,6 +177,28 @@ view: js-native [
     
     if (typeof window.vjsLayouts[id] != 'undefined') {
         document.querySelector('#app').appendChild(window.vjsLayouts[id])
+        
+        // HACK: adjust the elements to align with any tab stops they have
+        // This should be replaced with a proper grid system in the new version
+        if (window.vjsTabs > 0) {
+            var totalWidth = 0
+            
+            document.querySelectorAll('#app > div, #app > br').forEach((element) => {
+                if (element.nodeName == 'DIV') {
+                    if (element.hasAttribute('vjs-tab')) {
+                        var push = parseInt(element.getAttribute('vjs-tab'), 10) - totalWidth
+                        
+                        if (push > 0) {
+                            element.style.marginLeft = push + 'px'
+                        }
+                    }
+                    
+                    totalWidth += parseInt(window.getComputedStyle(element).width, 10)
+                } else {
+                    totalWidth = 0
+                }
+            })
+        }
     }
 }
 
@@ -241,7 +263,7 @@ layout: func [
         |
         
         'tab
-            (vjs-style-tab id)
+            (vjs-style-tab)
     ] ]
     
     id

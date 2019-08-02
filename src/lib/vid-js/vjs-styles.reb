@@ -124,13 +124,6 @@ vjs-style-field: js-native [
     vjsAddElement(id, element)
 }
 
-vjs-style-tab: js-native [
-    id [integer!]
-]{
-    var id = reb.Spell(reb.ArgR('id'))
-    
-    element = document.createElement('div')
-    element.style.width = (window.vjsTabs / 5) + 'px'
-    
-    vjsAddElement(id, element)
+vjs-style-tab: js-native []{
+    window.vjsTab = true
 }

@@ -5,6 +5,28 @@ view: js-native [
     
     if (typeof window.vjsLayouts[id] != 'undefined') {
         document.querySelector('#app').appendChild(window.vjsLayouts[id])
+        
+        // HACK: adjust the elements to align with any tab stops they have
+        // This should be replaced with a proper grid system in the new version
+        if (window.vjsTabs > 0) {
+            var totalWidth = 0
+            
+            document.querySelectorAll('#app > div, #app > br').forEach((element) => {
+                if (element.nodeName == 'DIV') {
+                    if (element.hasAttribute('vjs-tab')) {
+                        var push = parseInt(element.getAttribute('vjs-tab'), 10) - totalWidth
+                        
+                        if (push > 0) {
+                            element.style.marginLeft = push + 'px'
+                        }
+                    }
+                    
+                    totalWidth += parseInt(window.getComputedStyle(element).width, 10)
+                } else {
+                    totalWidth = 0
+                }
+            })
+        }
     }
 }
 
@@ -69,7 +91,7 @@ layout: func [
         |
         
         'tab
-            (vjs-style-tab id)
+            (vjs-style-tab)
     ] ]
     
     id

@@ -5,6 +5,7 @@ vjs-init: js-native [] {
     window.vjsAcross = true
     window.vjsReturn = false
     window.vjsTabs = 0
+    window.vjsTab = false
     
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {
@@ -22,6 +23,12 @@ vjs-init: js-native [] {
         }
         
         var div = document.createElement('div')
+        
+        if (window.vjsTab) {
+            div.setAttribute('vjs-tab', window.vjsTabs)
+            window.vjsTab = false
+        }
+        
         div.appendChild(element)
         
         window.vjsLayouts[id].appendChild(div)
