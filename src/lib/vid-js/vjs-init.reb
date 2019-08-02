@@ -4,6 +4,7 @@ vjs-init: js-native [] {
     
     window.vjsAcross = true
     window.vjsReturn = false
+    window.vjsTabs = 0
     
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {

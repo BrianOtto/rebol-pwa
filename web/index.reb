@@ -4,6 +4,7 @@ vjs-init: js-native [] {
     
     window.vjsAcross = true
     window.vjsReturn = false
+    window.vjsTabs = 0
     
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {
@@ -48,6 +49,14 @@ vjs-style-across: js-native [
 vjs-style-return: js-native [] {
     window.vjsAcross = !window.vjsAcross
     window.vjsReturn = true
+}
+
+vjs-style-tabs: js-native [
+    width [integer!]
+] {
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    
+    window.vjsTabs = width
 }
 
 vjs-style-text: js-native [
@@ -150,6 +159,17 @@ vjs-style-field: js-native [
     
     vjsAddElement(id, element)
 }
+
+vjs-style-tab: js-native [
+    id [integer!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    
+    element = document.createElement('div')
+    element.style.width = (window.vjsTabs / 5) + 'px'
+    
+    vjsAddElement(id, element)
+}
 view: js-native [
     id [integer!]
 ]{
@@ -212,6 +232,16 @@ layout: func [
         
         'return
             (vjs-style-return)
+        
+        |
+        
+        'tabs set width integer!
+            (vjs-style-tabs width)
+        
+        |
+        
+        'tab
+            (vjs-style-tab id)
     ] ]
     
     id
@@ -232,25 +262,10 @@ Rebol [
 init: func [] [
     view layout [
         across
-        title "Title"
-        h1 "Heading 1"
-        h2 "Heading 2"
-        return
-        h3 "Heading 3"
-        h4 "Heading 4"
-        h5 "Heading 5"
-        below
-        banner "Banner"
-        vh1 "Video Heading 1"
-        vh2 "Video Heading 2"
-        vh3 "Video Heading 3"
-        vtext "Video Body Text"
-        label "Label"
-        field
-        field "Field"
-        info
-        info "Info"
-        button "Button"
+        tabs 80
+        text "Name"  tab field return
+        text "Email" tab field return
+        text "Phone" tab field return
     ]
 ]
 

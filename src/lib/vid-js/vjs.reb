@@ -60,6 +60,16 @@ layout: func [
         
         'return
             (vjs-style-return)
+        
+        |
+        
+        'tabs set width integer!
+            (vjs-style-tabs width)
+        
+        |
+        
+        'tab
+            (vjs-style-tab id)
     ] ]
     
     id

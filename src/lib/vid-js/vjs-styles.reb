@@ -15,6 +15,14 @@ vjs-style-return: js-native [] {
     window.vjsReturn = true
 }
 
+vjs-style-tabs: js-native [
+    width [integer!]
+] {
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    
+    window.vjsTabs = width
+}
+
 vjs-style-text: js-native [
     id [integer!]
     style [text!]
@@ -112,6 +120,17 @@ vjs-style-field: js-native [
             element.type = 'button'
             element.value = text
     }
+    
+    vjsAddElement(id, element)
+}
+
+vjs-style-tab: js-native [
+    id [integer!]
+]{
+    var id = reb.Spell(reb.ArgR('id'))
+    
+    element = document.createElement('div')
+    element.style.width = (window.vjsTabs / 5) + 'px'
     
     vjsAddElement(id, element)
 }

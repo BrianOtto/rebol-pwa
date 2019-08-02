@@ -9,25 +9,10 @@ Rebol [
 init: func [] [
     view layout [
         across
-        title "Title"
-        h1 "Heading 1"
-        h2 "Heading 2"
-        return
-        h3 "Heading 3"
-        h4 "Heading 4"
-        h5 "Heading 5"
-        below
-        banner "Banner"
-        vh1 "Video Heading 1"
-        vh2 "Video Heading 2"
-        vh3 "Video Heading 3"
-        vtext "Video Body Text"
-        label "Label"
-        field
-        field "Field"
-        info
-        info "Info"
-        button "Button"
+        tabs 80
+        text "Name"  tab field return
+        text "Email" tab field return
+        text "Phone" tab field return
     ]
 ]
 
