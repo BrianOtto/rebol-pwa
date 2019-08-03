@@ -111,11 +111,29 @@ vjs-style-across: js-native [
     }
     
     window.vjsReturn = false
+    
+    window.vjsTabsIndex = 0
+    window.vjsTabsMulti = 1
 }
 
-vjs-style-return: js-native [] {
+vjs-style-return: js-native [
+    id [integer!]
+] {
+    var id = reb.Spell(reb.ArgR('id'))
+    
     window.vjsAcross = !window.vjsAcross
     window.vjsReturn = true
+    
+    window.vjsTabsIndex = 0
+    window.vjsTabsMulti = 1
+    
+    if (window.vjsLayouts[id]) {
+        var br = document.createElement('br')
+        window.vjsLayouts[id].appendChild(br)
+        
+        var div = document.createElement('div')
+        window.vjsLayouts[id].appendChild(div)
+    }
 }
 
 vjs-style-tabs: js-native [

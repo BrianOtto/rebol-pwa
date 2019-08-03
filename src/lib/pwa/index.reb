@@ -8,13 +8,16 @@ Rebol [
 
 init: func [] [
     view layout [
+        tabs 40
+        field "Field 1"
+        field "Field 2"
+        field "Field 3"
+        return
         across
-        tabs 150
-        vh3 "Buttons:"
-        tab
+        tabs 100
         button "Button 1"
-        tab
         button "Button 2"
+        button "Button 3"
     ]
 ]
 

@@ -4,8 +4,10 @@ vjs-init: js-native [] {
     
     window.vjsAcross = false
     window.vjsReturn = false
+    
     window.vjsTabs = []
     window.vjsTabsIndex = 0
+    window.vjsTabsMulti = 1
     window.vjsTab = false
     
     window.vjsAddElement = function(id, element) {
@@ -16,31 +18,16 @@ vjs-init: js-native [] {
             window.vjsLayouts[id].appendChild(div)
         }
         
-        if (window.vjsReturn) {
-            if (window.vjsAcross == false) {
-                var br = document.createElement('br')
-                window.vjsLayouts[id].appendChild(br)
-            }
-            
-            var div = document.createElement('div')
-            window.vjsLayouts[id].appendChild(div)
-        }
-        
-        if (window.vjsAcross == false) {
-            if (window.vjsLayouts[id].lastChild.hasChildNodes()) {
-                var br = document.createElement('br')
-                window.vjsLayouts[id].lastChild.appendChild(br)
-            }
-        }
-        
         var div = document.createElement('div')
         
         if (window.vjsTab) {
             var tabAttribute = (window.vjsAcross) ? 'vjs-tab-a' : 'vjs-tab-b'
-            div.setAttribute(tabAttribute, window.vjsTabs[window.vjsTabsIndex])
+            var tabSize = window.vjsTabs[window.vjsTabsIndex] * window.vjsTabsMulti
+            div.setAttribute(tabAttribute, tabSize)
             
             if (window.vjsTabsIndex == window.vjsTabs.length - 1) {
                 window.vjsTabsIndex = 0
+                window.vjsTabsMulti++
             } else {
                 window.vjsTabsIndex++
             }
@@ -55,6 +42,9 @@ vjs-init: js-native [] {
         if (window.vjsReturn) {
             window.vjsAcross = !window.vjsAcross
             window.vjsReturn = false
+        } else if (window.vjsAcross == false) {
+            var br = document.createElement('br')
+            window.vjsLayouts[id].lastChild.appendChild(br)
         }
     }
     
@@ -178,11 +168,29 @@ vjs-style-across: js-native [
     }
     
     window.vjsReturn = false
+    
+    window.vjsTabsIndex = 0
+    window.vjsTabsMulti = 1
 }
 
-vjs-style-return: js-native [] {
+vjs-style-return: js-native [
+    id [integer!]
+] {
+    var id = reb.Spell(reb.ArgR('id'))
+    
     window.vjsAcross = !window.vjsAcross
     window.vjsReturn = true
+    
+    window.vjsTabsIndex = 0
+    window.vjsTabsMulti = 1
+    
+    if (window.vjsLayouts[id]) {
+        var br = document.createElement('br')
+        window.vjsLayouts[id].appendChild(br)
+        
+        var div = document.createElement('div')
+        window.vjsLayouts[id].appendChild(div)
+    }
 }
 
 vjs-style-tabs: js-native [
@@ -319,7 +327,7 @@ layout: func [
         |
         
         'return
-            (vjs-style-return)
+            (vjs-style-return id)
         
         |
         
@@ -361,13 +369,16 @@ Rebol [
 
 init: func [] [
     view layout [
+        tabs 40
+        field "Field 1"
+        field "Field 2"
+        field "Field 3"
+        return
         across
-        tabs 150
-        vh3 "Buttons:"
-        tab
+        tabs 100
         button "Button 1"
-        tab
         button "Button 2"
+        button "Button 3"
     ]
 ]
 

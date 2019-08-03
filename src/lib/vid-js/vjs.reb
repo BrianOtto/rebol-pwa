@@ -109,7 +109,7 @@ layout: func [
         |
         
         'return
-            (vjs-style-return)
+            (vjs-style-return id)
         
         |
         
