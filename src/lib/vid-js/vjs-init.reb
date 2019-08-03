@@ -18,15 +18,11 @@ vjs-init: js-native [] {
             window.vjsLayouts[id].appendChild(br)
         }
         
-        if (window.vjsReturn) {
-            window.vjsAcross = !window.vjsAcross
-            window.vjsReturn = false
-        }
-        
         var div = document.createElement('div')
         
         if (window.vjsTab) {
-            div.setAttribute('vjs-tab', window.vjsTabs[window.vjsTabsIndex])
+            var tabAttribute = (window.vjsAcross) ? 'vjs-tab-a' : 'vjs-tab-b'
+            div.setAttribute(tabAttribute, window.vjsTabs[window.vjsTabsIndex])
             
             if (window.vjsTabsIndex == window.vjsTabs.length - 1) {
                 window.vjsTabsIndex = 0
@@ -40,6 +36,11 @@ vjs-init: js-native [] {
         div.appendChild(element)
         
         window.vjsLayouts[id].appendChild(div)
+        
+        if (window.vjsReturn) {
+            window.vjsAcross = !window.vjsAcross
+            window.vjsReturn = false
+        }
     }
     
     window.vjsCSS.rel  = 'stylesheet'

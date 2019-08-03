@@ -9,25 +9,35 @@ view: js-native [
         // HACK: adjust the elements to align with any tab stops they have
         // This should be replaced with a proper grid system in the new version
         if (window.vjsTabs.length > 0) {
-            // TODO: make this configurable
+            // TODO: make these configurable
             // It is the app's default margin
-            var totalWidth = 10
+            var totalWidth  = 10
+            var totalHeight = 10
             
             document.querySelectorAll('#app > div, #app > br').forEach((element) => {
                 if (element.nodeName == 'DIV') {
-                    var push = 0
+                    var pushA = 0
+                    var pushB = 0
                     
-                    if (element.hasAttribute('vjs-tab')) {
-                        push = parseInt(element.getAttribute('vjs-tab'), 10) - totalWidth
+                    if (element.hasAttribute('vjs-tab-a')) {
+                        pushA = parseInt(element.getAttribute('vjs-tab-a'), 10) - totalWidth
                         
-                        if (push > 0) {
-                            element.style.marginLeft = push + 'px'
+                        if (pushA > 0) {
+                            element.style.marginLeft = pushA + 'px'
+                        }
+                    } else if (element.hasAttribute('vjs-tab-b')) {
+                        pushB = parseInt(element.getAttribute('vjs-tab-b'), 10) - totalHeight
+                        
+                        if (pushB > 0) {
+                            element.style.marginTop = pushB + 'px'
                         }
                     }
                     
-                    totalWidth += parseInt(window.getComputedStyle(element).width, 10) + push
+                    totalWidth  += parseInt(window.getComputedStyle(element).width, 10) + pushA
+                    totalHeight += parseInt(window.getComputedStyle(element).height, 10) + pushB
                 } else {
-                    totalWidth = 10
+                    totalWidth  = 10
+                    totalHeight = 10
                 }
             })
         }

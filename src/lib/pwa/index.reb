@@ -14,7 +14,9 @@ init: func [] [
         tab field
         tab field
         return
-        h3 "Line 2"
+        tabs 50
+        tab h3 "Line 2"
+        tabs [80 350]
         tab text "Check"
         tab button "Ok"
         return
