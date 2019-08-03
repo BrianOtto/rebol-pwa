@@ -1,31 +1,3 @@
-vjs-style-across: js-native [
-    enable [integer!]
-] {
-    var enable = reb.UnboxInteger(reb.ArgR('enable'))
-    
-    if (enable == 1) {
-        window.vjsAcross = true
-    } else {
-        window.vjsAcross = false
-    }
-}
-
-vjs-style-return: js-native [] {
-    window.vjsAcross = !window.vjsAcross
-    window.vjsReturn = true
-}
-
-vjs-style-tabs: js-native [
-    size [integer!]
-] {
-    var size = reb.UnboxInteger(reb.ArgR('size'))
-    window.vjsTabs.push(size)
-}
-
-vjs-style-tabs-clear: js-native [] {
-    window.vjsTabs = []
-}
-
 vjs-style-text: js-native [
     id [integer!]
     style [text!]
@@ -127,6 +99,43 @@ vjs-style-field: js-native [
     vjsAddElement(id, element)
 }
 
-vjs-style-tab: js-native []{
+vjs-style-across: js-native [
+    enable [integer!]
+]{
+    var enable = reb.UnboxInteger(reb.ArgR('enable'))
+    
+    if (enable == 1) {
+        window.vjsAcross = true
+    } else {
+        window.vjsAcross = false
+    }
+}
+
+vjs-style-return: js-native [] {
+    window.vjsAcross = !window.vjsAcross
+    window.vjsReturn = true
+}
+
+vjs-style-tabs: js-native [
+    size [integer!]
+]{
+    var size = reb.UnboxInteger(reb.ArgR('size'))
+    window.vjsTabs.push(size)
+}
+
+vjs-style-tabs-clear: js-native [] {
+    window.vjsTabs = []
+}
+
+vjs-style-tab: js-native [] {
     window.vjsTab = true
+}
+
+vjs-style-guide: js-native [
+    id [integer!]
+] {
+    var id = reb.Spell(reb.ArgR('id'))
+    
+    element = document.createElement('div')
+    vjsAddElement(id, element)
 }

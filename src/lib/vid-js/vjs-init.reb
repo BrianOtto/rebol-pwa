@@ -2,7 +2,7 @@ vjs-init: js-native [] {
     window.vjsLayouts = []
     window.vjsCSS = document.createElement('link')
     
-    window.vjsAcross = true
+    window.vjsAcross = false
     window.vjsReturn = false
     window.vjsTabs = []
     window.vjsTabsIndex = 0

@@ -120,6 +120,11 @@ layout: func [
         
         'tab
             (vjs-style-tab)
+        
+        |
+        
+        'guide
+            (vjs-style-guide id)
     ] ]
     
     id
