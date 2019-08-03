@@ -14,28 +14,35 @@ view: js-native [
             var totalWidth  = 10
             var totalHeight = 10
             
-            document.querySelectorAll('#app > div, #app > br').forEach((element) => {
-                if (element.nodeName == 'DIV') {
-                    var pushA = 0
-                    var pushB = 0
-                    
-                    if (element.hasAttribute('vjs-tab-a')) {
-                        pushA = parseInt(element.getAttribute('vjs-tab-a'), 10) - totalWidth
+            document.querySelectorAll('#app > div, #app > br').forEach((parent) => {
+                parent.querySelectorAll('div, br').forEach((element) => {
+                    if (element.nodeName == 'DIV') {
+                        var pushA = 0
+                        var pushB = 0
                         
-                        if (pushA > 0) {
-                            element.style.marginLeft = pushA + 'px'
+                        if (element.hasAttribute('vjs-tab-a')) {
+                            pushA = parseInt(element.getAttribute('vjs-tab-a'), 10) - totalWidth
+                            
+                            if (pushA > 0) {
+                                element.style.marginLeft = pushA + 'px'
+                            }
+                        } else if (element.hasAttribute('vjs-tab-b')) {
+                            pushB = parseInt(element.getAttribute('vjs-tab-b'), 10) - totalHeight
+                            
+                            if (pushB > 0) {
+                                element.style.marginTop = pushB + 'px'
+                            }
                         }
-                    } else if (element.hasAttribute('vjs-tab-b')) {
-                        pushB = parseInt(element.getAttribute('vjs-tab-b'), 10) - totalHeight
                         
-                        if (pushB > 0) {
-                            element.style.marginTop = pushB + 'px'
-                        }
+                        totalWidth  += parseInt(window.getComputedStyle(element).width, 10) + pushA
+                        totalHeight += parseInt(window.getComputedStyle(element).height, 10) + pushB
+                    } else {
+                        totalWidth  = 10
+                        totalHeight = 10
                     }
-                    
-                    totalWidth  += parseInt(window.getComputedStyle(element).width, 10) + pushA
-                    totalHeight += parseInt(window.getComputedStyle(element).height, 10) + pushB
-                } else {
+                })
+                
+                if (parent.nodeName == 'BR') {
                     totalWidth  = 10
                     totalHeight = 10
                 }

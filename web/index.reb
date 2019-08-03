@@ -11,11 +11,26 @@ vjs-init: js-native [] {
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {
             window.vjsLayouts[id] = document.createDocumentFragment()
+            
+            var div = document.createElement('div')
+            window.vjsLayouts[id].appendChild(div)
+        }
+        
+        if (window.vjsReturn) {
+            if (window.vjsAcross == false) {
+                var br = document.createElement('br')
+                window.vjsLayouts[id].appendChild(br)
+            }
+            
+            var div = document.createElement('div')
+            window.vjsLayouts[id].appendChild(div)
         }
         
         if (window.vjsAcross == false) {
-            var br = document.createElement('br')
-            window.vjsLayouts[id].appendChild(br)
+            if (window.vjsLayouts[id].lastChild.hasChildNodes()) {
+                var br = document.createElement('br')
+                window.vjsLayouts[id].lastChild.appendChild(br)
+            }
         }
         
         var div = document.createElement('div')
@@ -35,7 +50,7 @@ vjs-init: js-native [] {
         
         div.appendChild(element)
         
-        window.vjsLayouts[id].appendChild(div)
+        window.vjsLayouts[id].lastChild.appendChild(div)
         
         if (window.vjsReturn) {
             window.vjsAcross = !window.vjsAcross
@@ -161,6 +176,8 @@ vjs-style-across: js-native [
     } else {
         window.vjsAcross = false
     }
+    
+    window.vjsReturn = false
 }
 
 vjs-style-return: js-native [] {
@@ -207,28 +224,35 @@ view: js-native [
             var totalWidth  = 10
             var totalHeight = 10
             
-            document.querySelectorAll('#app > div, #app > br').forEach((element) => {
-                if (element.nodeName == 'DIV') {
-                    var pushA = 0
-                    var pushB = 0
-                    
-                    if (element.hasAttribute('vjs-tab-a')) {
-                        pushA = parseInt(element.getAttribute('vjs-tab-a'), 10) - totalWidth
+            document.querySelectorAll('#app > div, #app > br').forEach((parent) => {
+                parent.querySelectorAll('div, br').forEach((element) => {
+                    if (element.nodeName == 'DIV') {
+                        var pushA = 0
+                        var pushB = 0
                         
-                        if (pushA > 0) {
-                            element.style.marginLeft = pushA + 'px'
+                        if (element.hasAttribute('vjs-tab-a')) {
+                            pushA = parseInt(element.getAttribute('vjs-tab-a'), 10) - totalWidth
+                            
+                            if (pushA > 0) {
+                                element.style.marginLeft = pushA + 'px'
+                            }
+                        } else if (element.hasAttribute('vjs-tab-b')) {
+                            pushB = parseInt(element.getAttribute('vjs-tab-b'), 10) - totalHeight
+                            
+                            if (pushB > 0) {
+                                element.style.marginTop = pushB + 'px'
+                            }
                         }
-                    } else if (element.hasAttribute('vjs-tab-b')) {
-                        pushB = parseInt(element.getAttribute('vjs-tab-b'), 10) - totalHeight
                         
-                        if (pushB > 0) {
-                            element.style.marginTop = pushB + 'px'
-                        }
+                        totalWidth  += parseInt(window.getComputedStyle(element).width, 10) + pushA
+                        totalHeight += parseInt(window.getComputedStyle(element).height, 10) + pushB
+                    } else {
+                        totalWidth  = 10
+                        totalHeight = 10
                     }
-                    
-                    totalWidth  += parseInt(window.getComputedStyle(element).width, 10) + pushA
-                    totalHeight += parseInt(window.getComputedStyle(element).height, 10) + pushB
-                } else {
+                })
+                
+                if (parent.nodeName == 'BR') {
                     totalWidth  = 10
                     totalHeight = 10
                 }
@@ -338,20 +362,12 @@ Rebol [
 init: func [] [
     view layout [
         across
-        tabs [80 350]
-        h2 "Line 1"
-        tab field
-        tab field
-        return
-        tabs 50
-        tab h3 "Line 2"
-        tabs [80 350]
-        tab text "Check"
-        tab button "Ok"
-        return
-        h4 "Line 3"
-        tab button "Button 1"
-        tab button "Button 2"
+        tabs 150
+        vh3 "Buttons:"
+        tab
+        button "Button 1"
+        tab
+        button "Button 2"
     ]
 ]
 

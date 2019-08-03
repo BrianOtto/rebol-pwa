@@ -109,6 +109,8 @@ vjs-style-across: js-native [
     } else {
         window.vjsAcross = false
     }
+    
+    window.vjsReturn = false
 }
 
 vjs-style-return: js-native [] {

@@ -1,4 +1,4 @@
-/* TODO: make the body and #app > div margins configurable */
+/* TODO: make the body and #app > div > div margins configurable */
 
 body {
     margin: 5px;
@@ -21,7 +21,9 @@ input[type="text"] {
     padding: 4px;
     padding-top: 5px;
     height: 15px;
-    min-width: 250px;
+    
+    /* 250px with padding and border */
+    width: 244px;
 }
 
 input[type="text"]:disabled {
@@ -37,9 +39,11 @@ input[type="button"] {
     border-bottom-color: #383D42;
     padding: 4px;
     padding-top: 5px;
-    min-width: 125px;
     color: #FFFFFF;
     background-image: linear-gradient(#4277BF, #2E5388);
+    
+    /* 125px with padding and border */
+    width: 119px;
 }
 
 input[type="button"]:hover {
@@ -47,6 +51,11 @@ input[type="button"]:hover {
 }
 
 #app > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#app > div > div {
     display: inline-block;
     margin: 5px;
 }

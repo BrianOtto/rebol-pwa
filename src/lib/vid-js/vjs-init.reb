@@ -11,11 +11,26 @@ vjs-init: js-native [] {
     window.vjsAddElement = function(id, element) {
         if (window.vjsLayouts[id] == null) {
             window.vjsLayouts[id] = document.createDocumentFragment()
+            
+            var div = document.createElement('div')
+            window.vjsLayouts[id].appendChild(div)
+        }
+        
+        if (window.vjsReturn) {
+            if (window.vjsAcross == false) {
+                var br = document.createElement('br')
+                window.vjsLayouts[id].appendChild(br)
+            }
+            
+            var div = document.createElement('div')
+            window.vjsLayouts[id].appendChild(div)
         }
         
         if (window.vjsAcross == false) {
-            var br = document.createElement('br')
-            window.vjsLayouts[id].appendChild(br)
+            if (window.vjsLayouts[id].lastChild.hasChildNodes()) {
+                var br = document.createElement('br')
+                window.vjsLayouts[id].lastChild.appendChild(br)
+            }
         }
         
         var div = document.createElement('div')
@@ -35,7 +50,7 @@ vjs-init: js-native [] {
         
         div.appendChild(element)
         
-        window.vjsLayouts[id].appendChild(div)
+        window.vjsLayouts[id].lastChild.appendChild(div)
         
         if (window.vjsReturn) {
             window.vjsAcross = !window.vjsAcross
