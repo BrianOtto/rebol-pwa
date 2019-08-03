@@ -42,6 +42,10 @@ input[type="button"] {
     background-image: linear-gradient(#4277BF, #2E5388);
 }
 
+input[type="button"]:hover {
+    color: #FEB44B;
+}
+
 #app > div {
     display: inline-block;
     margin: 5px;

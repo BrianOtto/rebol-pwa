@@ -9,10 +9,18 @@ Rebol [
 init: func [] [
     view layout [
         across
-        tabs 80
-        text "Name"  tab field return
-        text "Email" tab field return
-        text "Phone" tab field return
+        tabs [80 350]
+        h2 "Line 1"
+        tab field
+        tab field
+        return
+        h3 "Line 2"
+        tab text "Check"
+        tab button "Ok"
+        return
+        h4 "Line 3"
+        tab button "Button 1"
+        tab button "Button 2"
     ]
 ]
 

@@ -16,11 +16,14 @@ vjs-style-return: js-native [] {
 }
 
 vjs-style-tabs: js-native [
-    width [integer!]
+    size [integer!]
 ] {
-    var width = reb.UnboxInteger(reb.ArgR('width'))
-    
-    window.vjsTabs = width
+    var size = reb.UnboxInteger(reb.ArgR('size'))
+    window.vjsTabs.push(size)
+}
+
+vjs-style-tabs-clear: js-native [] {
+    window.vjsTabs = []
 }
 
 vjs-style-text: js-native [

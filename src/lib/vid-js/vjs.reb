@@ -8,22 +8,26 @@ view: js-native [
         
         // HACK: adjust the elements to align with any tab stops they have
         // This should be replaced with a proper grid system in the new version
-        if (window.vjsTabs > 0) {
-            var totalWidth = 0
+        if (window.vjsTabs.length > 0) {
+            // TODO: make this configurable
+            // It is the app's default margin
+            var totalWidth = 10
             
             document.querySelectorAll('#app > div, #app > br').forEach((element) => {
                 if (element.nodeName == 'DIV') {
+                    var push = 0
+                    
                     if (element.hasAttribute('vjs-tab')) {
-                        var push = parseInt(element.getAttribute('vjs-tab'), 10) - totalWidth
+                        push = parseInt(element.getAttribute('vjs-tab'), 10) - totalWidth
                         
                         if (push > 0) {
                             element.style.marginLeft = push + 'px'
                         }
                     }
                     
-                    totalWidth += parseInt(window.getComputedStyle(element).width, 10)
+                    totalWidth += parseInt(window.getComputedStyle(element).width, 10) + push
                 } else {
-                    totalWidth = 0
+                    totalWidth = 10
                 }
             })
         }
@@ -54,7 +58,10 @@ layout: func [
             | 'tt     ; <code>
             | 'code   ; <code class="vjs-code">
             | 'label  ; <span class="vjs-label">
-        ] opt set text text! 
+        ]
+        
+        opt set text text! 
+        
             (vjs-style-text id to text! style text)
             (text: "")
         
@@ -64,7 +71,11 @@ layout: func [
               'field  ; <input type="text">
             | 'info   ; <input type="text" readonly>
             | 'button ; <input type="button">
-        ] opt set text text! 
+        ]
+        
+        opt set text text!
+        opt set width integer!
+        
             (vjs-style-field id to text! style text)
             (text: "")
             
@@ -85,8 +96,15 @@ layout: func [
         
         |
         
-        'tabs set width integer!
-            (vjs-style-tabs width)
+        'tabs set size integer!
+            (vjs-style-tabs-clear)
+            (vjs-style-tabs size)
+        
+        |
+        
+        'tabs set sizes block!
+            (vjs-style-tabs-clear)
+            (for-each size sizes [vjs-style-tabs size])
         
         |
         
