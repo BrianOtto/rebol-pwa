@@ -2,10 +2,14 @@ vjs-style-text: js-native [
     id [integer!]
     style [text!]
     text [text!]
+    width [integer!]
+    height [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     var style = reb.Spell(reb.ArgR('style'))
     var text = reb.Spell(reb.ArgR('text'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     var tag = ''
     var cls = false
@@ -61,6 +65,14 @@ vjs-style-text: js-native [
         element = document.createElement(tag)
         element.textContent = text
         
+        if (width > 0) {
+            element.style.width = width + 'px';
+            
+            if (height > 0) {
+                element.style.height = height + 'px';
+            }
+        }
+        
         if (cls) {
             element.className = 'vjs-' + style
         }
@@ -73,10 +85,14 @@ vjs-style-field: js-native [
     id [integer!]
     style [text!]
     text [text!]
+    width [integer!]
+    height [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     var style = reb.Spell(reb.ArgR('style'))
     var text = reb.Spell(reb.ArgR('text'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     switch (style) {
         case 'field' :
@@ -94,6 +110,18 @@ vjs-style-field: js-native [
             element = document.createElement('input')
             element.type = 'button'
             element.value = text
+    }
+    
+    // subtract the padding and border sizes
+    width = width - 6
+    height = height - 6
+    
+    if (width > 0) {
+        element.style.width = width + 'px';
+        
+        if (height > 0) {
+            element.style.height = height + 'px';
+        }
     }
     
     vjsAddElement(id, element)
@@ -119,7 +147,7 @@ vjs-style-across: js-native [
 vjs-style-return: js-native [
     id [integer!]
 ] {
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     
     window.vjsAcross = !window.vjsAcross
     window.vjsReturn = true
@@ -153,9 +181,22 @@ vjs-style-tab: js-native [] {
 
 vjs-style-guide: js-native [
     id [integer!]
+    width [integer!]
+    height [integer!]
 ] {
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     element = document.createElement('div')
+    
+    if (width > 0) {
+        element.style.width = width + 'px';
+        
+        if (height > 0) {
+            element.style.height = height + 'px';
+        }
+    }
+    
     vjsAddElement(id, element)
 }

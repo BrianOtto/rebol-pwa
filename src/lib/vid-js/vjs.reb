@@ -1,7 +1,7 @@
 view: js-native [
     id [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     
     if (typeof window.vjsLayouts[id] != 'undefined') {
         document.querySelector('#app').appendChild(window.vjsLayouts[id])
@@ -57,6 +57,8 @@ layout: func [
     vjs-layout-id: me + 1
     id: vjs-layout-id
     
+    vjs-style-reset
+    
     parse specs rules: [ any [
         copy style [
               'title  ; <h1>
@@ -77,10 +79,28 @@ layout: func [
             | 'label  ; <span class="vjs-label">
         ]
         
-        opt set text text! 
+        opt set text text!
+        opt set size [integer! | pair!]
+        opt set color tuple!
+        opt set align word!
         
-            (vjs-style-text id to text! style text)
-            (text: "")
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-text id to text! style text width height
+            
+            vjs-style-reset
+            
+            )
         
         |
         
@@ -91,10 +111,27 @@ layout: func [
         ]
         
         opt set text text!
-        opt set width integer!
+        opt set size [integer! | pair!]
+        opt set color tuple!
+        opt set align word!
         
-            (vjs-style-field id to text! style text)
-            (text: "")
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-field id to text! style text width height
+            
+            vjs-style-reset
+            
+            )
             
         |
         
@@ -131,12 +168,42 @@ layout: func [
         |
         
         'guide
-            (vjs-style-guide id)
+        
+        opt set size [integer! | pair!]
+        
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-guide id width height
+            
+            vjs-style-reset
+            
+            )
+        
+        |
+        
+        skip
     ] ]
     
     id
 ]
 
 vjs-layout-id: 0
+
+vjs-style-reset: func [] [
+    text: ""
+    size: 0
+    color: 0.0.0
+    align: 'left
+]
 
 vjs-init

@@ -59,10 +59,14 @@ vjs-style-text: js-native [
     id [integer!]
     style [text!]
     text [text!]
+    width [integer!]
+    height [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     var style = reb.Spell(reb.ArgR('style'))
     var text = reb.Spell(reb.ArgR('text'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     var tag = ''
     var cls = false
@@ -118,6 +122,14 @@ vjs-style-text: js-native [
         element = document.createElement(tag)
         element.textContent = text
         
+        if (width > 0) {
+            element.style.width = width + 'px';
+            
+            if (height > 0) {
+                element.style.height = height + 'px';
+            }
+        }
+        
         if (cls) {
             element.className = 'vjs-' + style
         }
@@ -130,10 +142,14 @@ vjs-style-field: js-native [
     id [integer!]
     style [text!]
     text [text!]
+    width [integer!]
+    height [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     var style = reb.Spell(reb.ArgR('style'))
     var text = reb.Spell(reb.ArgR('text'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     switch (style) {
         case 'field' :
@@ -151,6 +167,18 @@ vjs-style-field: js-native [
             element = document.createElement('input')
             element.type = 'button'
             element.value = text
+    }
+    
+    // subtract the padding and border sizes
+    width = width - 6
+    height = height - 6
+    
+    if (width > 0) {
+        element.style.width = width + 'px';
+        
+        if (height > 0) {
+            element.style.height = height + 'px';
+        }
     }
     
     vjsAddElement(id, element)
@@ -176,7 +204,7 @@ vjs-style-across: js-native [
 vjs-style-return: js-native [
     id [integer!]
 ] {
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     
     window.vjsAcross = !window.vjsAcross
     window.vjsReturn = true
@@ -210,16 +238,29 @@ vjs-style-tab: js-native [] {
 
 vjs-style-guide: js-native [
     id [integer!]
+    width [integer!]
+    height [integer!]
 ] {
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
+    var width = reb.UnboxInteger(reb.ArgR('width'))
+    var height = reb.UnboxInteger(reb.ArgR('height'))
     
     element = document.createElement('div')
+    
+    if (width > 0) {
+        element.style.width = width + 'px';
+        
+        if (height > 0) {
+            element.style.height = height + 'px';
+        }
+    }
+    
     vjsAddElement(id, element)
 }
 view: js-native [
     id [integer!]
 ]{
-    var id = reb.Spell(reb.ArgR('id'))
+    var id = reb.UnboxInteger(reb.ArgR('id'))
     
     if (typeof window.vjsLayouts[id] != 'undefined') {
         document.querySelector('#app').appendChild(window.vjsLayouts[id])
@@ -275,6 +316,8 @@ layout: func [
     vjs-layout-id: me + 1
     id: vjs-layout-id
     
+    vjs-style-reset
+    
     parse specs rules: [ any [
         copy style [
               'title  ; <h1>
@@ -295,10 +338,28 @@ layout: func [
             | 'label  ; <span class="vjs-label">
         ]
         
-        opt set text text! 
+        opt set text text!
+        opt set size [integer! | pair!]
+        opt set color tuple!
+        opt set align word!
         
-            (vjs-style-text id to text! style text)
-            (text: "")
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-text id to text! style text width height
+            
+            vjs-style-reset
+            
+            )
         
         |
         
@@ -309,10 +370,27 @@ layout: func [
         ]
         
         opt set text text!
-        opt set width integer!
+        opt set size [integer! | pair!]
+        opt set color tuple!
+        opt set align word!
         
-            (vjs-style-field id to text! style text)
-            (text: "")
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-field id to text! style text width height
+            
+            vjs-style-reset
+            
+            )
             
         |
         
@@ -349,13 +427,43 @@ layout: func [
         |
         
         'guide
-            (vjs-style-guide id)
+        
+        opt set size [integer! | pair!]
+        
+            (
+            
+            width: 0
+            height: 0
+            
+            either pair? size [
+                width: size/1
+                height: size/2
+            ][
+                width: size
+            ]
+            
+            vjs-style-guide id width height
+            
+            vjs-style-reset
+            
+            )
+        
+        |
+        
+        skip
     ] ]
     
     id
 ]
 
 vjs-layout-id: 0
+
+vjs-style-reset: func [] [
+    text: ""
+    size: 0
+    color: 0.0.0
+    align: 'left
+]
 
 vjs-init
 
@@ -369,16 +477,15 @@ Rebol [
 
 init: func [] [
     view layout [
-        tabs 40
-        field "Field 1"
-        field "Field 2"
-        field "Field 3"
-        return
         across
-        tabs 100
-        button "Button 1"
-        button "Button 2"
-        button "Button 3"
+        vh2 "Guides"
+        guide 60x100
+        label "Name:" 100x24 right
+        field
+        return
+        label "Address:" 100x24 right
+        field
+        return
     ]
 ]
 
